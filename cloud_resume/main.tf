@@ -102,30 +102,33 @@ resource "aws_s3_bucket_website_configuration" "www" {
   }
 }
 
-# https://developer.hashicorp.com/terraform/tutorials/applications/cloudflare-static-website
-
-
 # data "cloudflare_zones" "domain" {
 #   filter {
 #     name = var.site_domain
 #   }
 # }
 
-# resource "cloudflare_record" "site_cname" {
-#   zone_id = data.cloudflare_zones.domain.zones[0].id
-#   name    = var.site_domain
-#   value   = aws_s3_bucket_website_configuration.site.website_endpoint
-#   type    = "CNAME"
+resource "cloudflare_record" "cloud_resume_cname" {
+  zone_id = var.zoneid
+  name    = var.bucket_name
+  value   = aws_s3_bucket_website_configuration.<cloud_resume_site_bucket_website_configuration>.website_endpoint
+  type    = "CNAME"
 
-#   ttl     = 1
-#   proxied = true
-# }
+  ttl     = 1
+  proxied = true
+}
 
-# resource "cloudflare_record" "www" {
-#   zone_id = data.cloudflare_zones.domain.zones[0].id
-#   name    = "www"
-#   value   = var.site_domain
-#   type    = "CNAME"
+resource "cloudflare_record" "www" {
+  zone_id = var.zoneid
+  name    = "www"
+  value   = var.bucket_name
+  type    = "CNAME"
 
-#   ttl     = 1
-#   proxied = tru
+  ttl     = 1
+  proxied = tru
+
+# https://developer.hashicorp.com/terraform/tutorials/applications/cloudflare-static-website
+
+
+
+
