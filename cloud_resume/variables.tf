@@ -8,7 +8,11 @@ variable "bucket_name" {
     default = "ernestresume.eacheampong.io"
 }
 
-variable "zoneid" {
-    type = string
-    description = "CloudFlare Zone ID"
-}
+# variable "zoneid" {
+#     type = string
+#     description = "CloudFlare Zone ID"
+# }
+# variable "apitoken" {
+#     type = string
+#     description = "CloudFlare API Token"
+# }

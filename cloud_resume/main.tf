@@ -1,4 +1,14 @@
 terraform {
+  backend "s3" {
+    bucket  = "eacheampongterraform"
+    key     = "cloud_resume"
+    region  = "us-east-1"
+    profile = "default"
+  }
+}
+
+
+terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -10,27 +20,12 @@ terraform {
 # Configure the AWS Provider
 provider "aws" {
   region                    = "us-east-1"
-  shared_credentials_files  = "~/.aws/credentials"
+  shared_credentials_files  = ["~/.aws/credentials"]
   profile                   = "default"
 }
 
-provider "cloudflare" {}
+# provider "cloudflare" {}
 
-# Copyright (c) HashiCorp, Inc.
-# SPDX-License-Identifier: MPL-2.0
-
-provider "aws" {
-  region = var.aws_region
-}
-
-provider "cloudflare" {}
-
-
-
-
-
-
-}
 resource "aws_s3_bucket" "cloud_resume_site_bucket"{
   bucket    = var.bucket_name
 
@@ -40,7 +35,7 @@ resource "aws_s3_bucket" "cloud_resume_site_bucket"{
   }
 }
 
-esource "aws_s3_bucket_website_configuration" "cloud_resume_site_bucket_website_configuration" {
+resource "aws_s3_bucket_website_configuration" "cloud_resume_site_bucket_website_configuration" {
   bucket      = aws_s3_bucket.cloud_resume_site_bucket.id
 
   index_document {
@@ -108,24 +103,24 @@ resource "aws_s3_bucket_website_configuration" "www" {
 #   }
 # }
 
-resource "cloudflare_record" "cloud_resume_cname" {
-  zone_id = var.zoneid
-  name    = var.bucket_name
-  value   = aws_s3_bucket_website_configuration.<cloud_resume_site_bucket_website_configuration>.website_endpoint
-  type    = "CNAME"
+# resource "cloudflare_record" "cloud_resume_cname" {
+#   zone_id = var.zoneid
+#   name    = var.bucket_name
+#   value   = aws_s3_bucket_website_configuration.<cloud_resume_site_bucket_website_configuration>.website_endpoint
+#   type    = "CNAME"
 
-  ttl     = 1
-  proxied = true
-}
+#   ttl     = 1
+#   proxied = true
+# }
 
-resource "cloudflare_record" "www" {
-  zone_id = var.zoneid
-  name    = "www"
-  value   = var.bucket_name
-  type    = "CNAME"
+# resource "cloudflare_record" "www" {
+#   zone_id = var.zoneid
+#   name    = "www"
+#   value   = var.bucket_name
+#   type    = "CNAME"
 
-  ttl     = 1
-  proxied = tru
+#   ttl     = 1
+#   proxied = tru
 
 # https://developer.hashicorp.com/terraform/tutorials/applications/cloudflare-static-website
 
