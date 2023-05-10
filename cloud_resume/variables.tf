@@ -4,14 +4,14 @@ variable "region" {
 }
 
 variable "bucket_name" {
-    type    = string
-    default = "ernestresume.eacheampong.io"
+    type        = string
+    description = "site domain of s3 hosted website"
 }
 
-# variable "zoneid" {
-#     type = string
-#     description = "CloudFlare Zone ID"
-# }
+variable "CloudFlareZoneID" {
+    type        = string
+    description = "CloudFlare Zone ID"
+}
 # variable "apitoken" {
 #     type = string
 #     description = "CloudFlare API Token"
