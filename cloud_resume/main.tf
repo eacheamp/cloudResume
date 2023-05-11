@@ -7,16 +7,6 @@ terraform {
   }
 }
 
-
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 4.0"
-    }
-  }
-}
-
 # Configure the AWS Provider
 provider "aws" {
   region                    = "us-east-1"
@@ -24,66 +14,103 @@ provider "aws" {
   profile                   = "default"
 }
 
-# provider "cloudflare" {}
+provider "cloudflare" {
+    api_token   = var.cloudflare_api_token
+}
 
+locals {
+  bucket = "eacheampong.work"
+}
 resource "aws_s3_bucket" "cloud_resume_site_bucket"{
-  bucket    = var.bucket_name
+  bucket        = local.bucket
+  force_destroy = true
 
   tags      = {
-    use_case  = "Private bucket that holds web assets"
-    Name      = var.bucket_name
+    site      = local.bucket
+    use_case  = "Public bucket that holds web assets"
+    Name      = var.domain_name
   }
 }
 
 resource "aws_s3_bucket_website_configuration" "cloud_resume_site_bucket_website_configuration" {
   bucket      = aws_s3_bucket.cloud_resume_site_bucket.id
-
   index_document {
     suffix    = "resume_index.html"
   }
-
   error_document {
     key       = "error.html"
   }
 }
 
-resource "aws_s3_bucket_policy" "cloud_resume_site_bucket_policy" {
+resource "aws_s3_bucket_ownership_controls" "cloud_resume_site_bucketownership" {
+  bucket = aws_s3_bucket.cloud_resume_site_bucket.id
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+
+resource "aws_s3_bucket_public_access_block" "cloud_resume_bucket_piblic_access_block" {
   bucket = aws_s3_bucket.cloud_resume_site_bucket.id
 
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Sid       = "PublicReadGetObject"
-        Effect    = "Allow"
-        Principal = "*"
-        Action    = "s3:GetObject"
-        Resource = [
-          aws_s3_bucket.cloud_resume_site_bucket.arn,
-          "${aaws_s3_bucket.cloud_resume_site_bucket.arn}/*",
-        ]
-      },
-    ]
-  })
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = false
+  restrict_public_buckets = false
 }
+
 resource "aws_s3_bucket_acl" "cloud_resume_bucket_acl" {
-  bucket = aws_s3_bucket.cloud_resume_bucket.id
+  depends_on = [
+    aws_s3_bucket_ownership_controls.cloud_resume_site_bucketownership,
+    aws_s3_bucket_public_access_block.cloud_resume_bucket_piblic_access_block]
+  bucket = aws_s3_bucket.cloud_resume_site_bucket.id
   acl    = "public-read"
 }
 
-
 resource "aws_s3_bucket_versioning" "cloud_resume_bucket_versioning" {
-  bucket = aws_s3_bucket.cloud_resume_bucket.id
+  bucket = aws_s3_bucket.cloud_resume_site_bucket.id
   versioning_configuration {
     status = "Enabled"
   }
 }
 
+resource "aws_s3_bucket_policy" "cloud_resume_site_bucket_policy" {
+  bucket  = aws_s3_bucket.cloud_resume_site_bucket.id
+  policy  = data.aws_iam_policy_document.allowedcloudresumepublic.json
+}
+
+data "aws_iam_policy_document" "allowedcloudresumepublic"{
+  statement {
+        sid         = "PublicReadGetObject"
+        effect      = "Allow"
+        principals  {
+                    type = "AWS"
+                    identifiers = ["*"]
+        }
+        actions     = ["s3:GetObject", "s3:GetObjectVersion"]
+        resources   = [
+          aws_s3_bucket.cloud_resume_site_bucket.arn,
+          "${aws_s3_bucket.cloud_resume_site_bucket.arn}/*",
+        ]
+      }
+}
+
 resource "aws_s3_bucket" "www" {
-  bucket = "www.${var.bucket_name}"
+  bucket  = "www.${var.domain_name}"
+  tags      = {
+    site      = local.bucket
+    use_case  = "Redirtect bucket that holds web assets"
+  }
+}
+
+resource "aws_s3_bucket_ownership_controls" "wwwbucketownership" {
+  bucket = aws_s3_bucket.www.id
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
 }
 
 resource "aws_s3_bucket_acl" "www" {
+  depends_on = [aws_s3_bucket_ownership_controls.wwwbucketownership]
   bucket = aws_s3_bucket.www.id
 
   acl = "private"
@@ -93,37 +120,34 @@ resource "aws_s3_bucket_website_configuration" "www" {
   bucket = aws_s3_bucket.www.id
 
   redirect_all_requests_to {
-    host_name = var.bucket_name
+    host_name = var.domain_name
   }
 }
 
-# data "cloudflare_zones" "domain" {
-#   filter {
-#     name = var.site_domain
-#   }
-# }
+resource "cloudflare_record" "cloud_resume_cname" {
+  zone_id = var.CloudFlareZoneID
+  name    = var.domain_name
+  value   = aws_s3_bucket_website_configuration.cloud_resume_site_bucket_website_configuration.website_endpoint
+  type    = "CNAME"
 
-# resource "cloudflare_record" "cloud_resume_cname" {
-#   zone_id = var.zoneid
-#   name    = var.bucket_name
-#   value   = aws_s3_bucket_website_configuration.<cloud_resume_site_bucket_website_configuration>.website_endpoint
-#   type    = "CNAME"
+  ttl     = 1
+  proxied = true
+}
 
-#   ttl     = 1
-#   proxied = true
-# }
+resource "cloudflare_record" "www" {
+  zone_id = var.CloudFlareZoneID
+  name    = "www"
+  value   = var.domain_name
+  type    = "CNAME"
 
-# resource "cloudflare_record" "www" {
-#   zone_id = var.zoneid
-#   name    = "www"
-#   value   = var.bucket_name
-#   type    = "CNAME"
+  ttl     = 1
+  proxied = true
+}
 
-#   ttl     = 1
-#   proxied = tru
-
-# https://developer.hashicorp.com/terraform/tutorials/applications/cloudflare-static-website
-
-
-
-
+resource "cloudflare_page_rule" "https_cloud_resume"{
+  zone_id = var.CloudFlareZoneID
+  target  = "*.${var.domain_name}/*"
+  actions {
+    always_use_https = true
+  }
+}
