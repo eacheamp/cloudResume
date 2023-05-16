@@ -35,7 +35,7 @@ resource "aws_s3_bucket" "cloud_resume_site_bucket"{
 resource "aws_s3_bucket_website_configuration" "cloud_resume_site_bucket_website_configuration" {
   bucket      = aws_s3_bucket.cloud_resume_site_bucket.id
   index_document {
-    suffix    = "resume_index.html"
+    suffix    = "resume.html"
   }
   error_document {
     key       = "error.html"
