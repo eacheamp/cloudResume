@@ -18,6 +18,10 @@ provider "cloudflare" {
     api_token   = var.cloudflare_api_token
 }
 
+module "siteDynamoDBtable" {
+  source = "./modules/database"
+}
+
 locals {
   bucket = "eacheampong.work"
 }
