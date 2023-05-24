@@ -22,3 +22,15 @@ resource "aws_dynamodb_table" "site-stats-dynamodb-table" {
     project     = "cloudResumeChallange"
   }
 }
+
+# resource "aws_dynamodb_table_item" "site_stat_item_1" {
+#   table_name  = aws_dynamodb_table.site-stats-dynamodb-table.name
+#   hash_key    = aws_dynamodb_table.site-stats-dynamodb-table.hash_key
+
+#   item = <<ITEM
+#   {
+#     "siteStat_id" : {"S": "Count"},
+#     "visitorCount" : {"S" : "0"}
+#   }
+#   ITEM
+# }
