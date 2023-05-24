@@ -21,6 +21,9 @@ provider "cloudflare" {
 module "siteDynamoDBtable" {
   source = "./modules/database"
 }
+module "visitorCounterLambda" {
+  source = "./modules/lambda"
+}
 
 locals {
   bucket = "eacheampong.work"
