@@ -74,15 +74,20 @@ hr{
     font-weight: bolder;
     font-family: 'Open Sans', sans-serif;
 }
-#email{
-    font-size: 15px !important;
-    font-weight: bold !important;
+#emailabout{
+    font-size: 10px !important;
+    /* font-weight: bold !important; */
     font-family: 'Cutive Mono',monospace;
 }
 #college,#email,#year-graduation,#education,#more-about,#telephone,#fax{
     color: #555;
     font-size: 13.5px;
 }
+#about-link{
+    color: rgb(247, 247, 247);
+    font-size: 12px;
+}
+
 strong,span{
     color: black;
     font-size: 16px;
