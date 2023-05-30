@@ -1,8 +1,8 @@
 resource "aws_dynamodb_table" "site-stats-dynamodb-table" {
   name           = "eacheampongVisitorCounter"
   billing_mode   = "PROVISIONED"
-  read_capacity  = 3
-  write_capacity = 3
+  read_capacity  = 1
+  write_capacity = 1
   hash_key       = "siteStat_id"
   range_key      = "visitorCount"
 
@@ -23,14 +23,14 @@ resource "aws_dynamodb_table" "site-stats-dynamodb-table" {
   }
 }
 
-# resource "aws_dynamodb_table_item" "site_stat_item_1" {
-#   table_name  = aws_dynamodb_table.site-stats-dynamodb-table.name
-#   hash_key    = aws_dynamodb_table.site-stats-dynamodb-table.hash_key
+resource "aws_dynamodb_table_item" "site_stat_item_1" {
+  table_name  = aws_dynamodb_table.site-stats-dynamodb-table.name
+  hash_key    = aws_dynamodb_table.site-stats-dynamodb-table.hash_key
 
-#   item = <<ITEM
-#   {
-#     "siteStat_id" : {"S": "Count"},
-#     "visitorCount" : {"S" : "0"}
-#   }
-#   ITEM
-# }
+  item = <<ITEM
+  {
+    "siteStat_id" : {"S": "Count"},
+    "visitorCount" : {"S" : "10"}
+  }
+  ITEM
+}
