@@ -25,6 +25,10 @@ module "visitorCounterLambda" {
   source = "./modules/lambda"
 }
 
+module "apiGateway" {
+  source = "./modules/api"
+}
+
 locals {
   bucket = "eacheampong.work"
 }
