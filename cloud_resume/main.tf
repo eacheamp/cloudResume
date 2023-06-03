@@ -18,15 +18,14 @@ provider "cloudflare" {
     api_token   = var.cloudflare_api_token
 }
 
-module "siteDynamoDBtable" {
-  source = "./modules/database"
-}
 module "visitorCounterLambda" {
   source = "./modules/lambda"
 }
-
 module "apiGateway" {
   source = "./modules/api"
+}
+module "siteDynamoDBtable" {
+  source = "./modules/database"
 }
 
 locals {
