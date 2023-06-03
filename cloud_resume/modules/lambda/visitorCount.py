@@ -5,7 +5,7 @@ dynamodb        = boto3.resource('dynamodb')
 tableName       = "eacheampongVisitorCounter"
 table           = dynamodb.Table(tableName)
 
-def lambda_handler (e, context):
+def handler (e, context):
     response    = table.get_item(Key={"siteStat_id":'Count'})
     count       = response["Item"]["visitorCount"]
 

@@ -12,3 +12,11 @@ output "domain_name" {
   description = "Website endpoint"
   value       = var.domain_name
 }
+
+output "visitor_counterLambda" {
+    value = module.visitorCounterLambda.visitor_counterLambdaName
+}
+
+output "visitor_counterLambdarn" {
+    value = module.visitorCounterLambda.visitor_counterLambdarn
+}
