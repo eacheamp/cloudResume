@@ -20,3 +20,7 @@ output "visitor_counterLambda" {
 output "visitor_counterLambdarn" {
     value = module.visitorCounterLambda.visitor_counterLambdarn
 }
+
+output "rest_api_url" {
+    value = module.apiGateway.rest_api_url
+}
