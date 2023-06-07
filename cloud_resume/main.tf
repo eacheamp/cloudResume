@@ -21,16 +21,18 @@ provider "cloudflare" {
 module "visitorCounterLambda" {
   source = "./modules/lambda"
 }
-module "apiGateway" {
-  source = "./modules/api"
-  api_gateway_region        = var.region
-  api_gateway_account_id    = var.account_id
-  lambda_function_arn       = module.visitorCounterLambda.visitor_counterLambdarn
-  lambda_function_name      = module.visitorCounterLambda.visitor_counterLambdaName
-  depends_on = [
-    module.visitorCounterLambda
-  ]   
-}
+# module "apiGateway" {
+#   source = "./modules/api"
+#   api_gateway_region            = var.region
+#   api_gateway_account_id        = var.account_id
+#   get_lambda_function_arn       = module.visitorCounterLambda.get_visitor_countLambdarn
+#   update_lambda_function_arn    = module.visitorCounterLambda.update_visitor_countLambdarn
+#   get_lambda_function_name      = module.visitorCounterLambda.get_visitor_countLambdaName
+#   update_lambda_function_name   = module.visitorCounterLambda.update_visitor_countLambdaName
+#   depends_on = [
+#     module.visitorCounterLambda
+#   ]   
+# }
 module "siteDynamoDBtable" {
   source = "./modules/database"
 }

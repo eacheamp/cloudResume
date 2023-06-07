@@ -1,7 +1,14 @@
+# Get Item
 data "archive_file" "lambda" {
   type        = "zip"
-  source_file = "${path.module}/visitorCount.py"
-  output_path = "${path.module}/lambda_function_payload.zip"
+  source_file = "${path.module}/getVisitorCount.py"
+  output_path = "${path.module}/getVisitorCount_lambda_function_payload.zip"
+}
+#update Item
+data "archive_file" "lambda_update" {
+  type        = "zip"
+  source_file = "${path.module}/updateVisitorCount.py"
+  output_path = "${path.module}/updateVisitorCount_lambda_function_payload.zip"
 }
 #lambda bucket
 resource "aws_s3_bucket" "lambda_bucket"{
@@ -21,25 +28,48 @@ resource "aws_s3_bucket_ownership_controls" "s3_bucket_acl_ownership" {
     object_ownership = "ObjectWriter"
   }
 }
-
+# Get Item
 resource "aws_s3_object" "s3_object_lambda_code"{
   bucket  = aws_s3_bucket.lambda_bucket.id
-  key     = "lambda_function_payload.zip"
+  key     = "getVisitorCount_lambda_function_payload.zip"
   source  = data.archive_file.lambda.output_path
   etag    = filemd5(data.archive_file.lambda.output_path) 
 }
-#lambda Visitor Counter
-resource "aws_lambda_function" "visitor_counter_lambda" {
+# Update Item
+resource "aws_s3_object" "s3_object_lambda_code_Update"{
+  bucket  = aws_s3_bucket.lambda_bucket.id
+  key     = "updateVisitorCount_lambda_function_payload.zip"
+  source  = data.archive_file.lambda_update.output_path
+  etag    = filemd5(data.archive_file.lambda_update.output_path) 
+}
+#lambda Visitor Counter - Get Item
+resource "aws_lambda_function" "get_visitor_count_lambda" {
   # If the file is not in the current working directory you will need to include a
   # path.module in the filename.
   # filename      = "lambda_function_payload.zip"
   s3_bucket     = aws_s3_bucket.lambda_bucket.id 
   s3_key        = aws_s3_object.s3_object_lambda_code.key 
-  function_name = "visitor_counter_lambda"
+  function_name = "getVisitorCount_lambda"
   role          = aws_iam_role.iam_for_lambda.arn
-  handler       = "visitorCount.handler"
+  handler       = "getVisitorCount.handler"
 
   source_code_hash = data.archive_file.lambda.output_base64sha256
+
+  runtime = "python3.10"
+
+}
+#lambda Visitor Counter - Update Item
+resource "aws_lambda_function" "update_visitor_count_lambda" {
+  # If the file is not in the current working directory you will need to include a
+  # path.module in the filename.
+  # filename      = "lambda_function_payload.zip"
+  s3_bucket     = aws_s3_bucket.lambda_bucket.id 
+  s3_key        = aws_s3_object.s3_object_lambda_code_Update.key 
+  function_name = "updateVisitorCount_lambda"
+  role          = aws_iam_role.iam_for_lambda.arn
+  handler       = "updateVisitorCount.handler"
+
+  source_code_hash = data.archive_file.lambda_update.output_base64sha256
 
   runtime = "python3.10"
 
@@ -64,6 +94,7 @@ data "aws_iam_policy_document" "dynamoDBLambdaPermissions" {
 
     actions = [
       "dynamodb:GetItem",
+      "dynamodb:PutItem"
     ]
 
     resources = [
@@ -87,7 +118,12 @@ resource "aws_iam_role_policy_attachment" "lambda_dynamodb_intergration_policy_a
   policy_arn  = aws_iam_policy.dynamoDBLambdaPolicy.arn
 }
 #cloudwatch group
-resource "aws_cloudwatch_log_group" "lambda_log_group" {
-  name              = "/aws/lambda/${aws_lambda_function.visitor_counter_lambda.function_name}"
+resource "aws_cloudwatch_log_group" "get_lambda_log_group" {
+  name              = "/aws/lambda/${aws_lambda_function.get_visitor_count_lambda.function_name}"
+  retention_in_days = 30
+}
+#cloudwatch group
+resource "aws_cloudwatch_log_group" "update_lambda_log_group" {
+  name              = "/aws/lambda/${aws_lambda_function.update_visitor_count_lambda.function_name}"
   retention_in_days = 30
 }
