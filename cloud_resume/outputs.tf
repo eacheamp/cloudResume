@@ -13,14 +13,14 @@ output "domain_name" {
   value       = var.domain_name
 }
 
-output "visitor_counterLambda" {
-    value = module.visitorCounterLambda.visitor_counterLambdaName
-}
+# output "visitor_counterLambda" {
+#     value = module.visitorCounterLambda.visitor_counterLambdaName
+# }
 
-output "visitor_counterLambdarn" {
-    value = module.visitorCounterLambda.visitor_counterLambdarn
-}
+# output "visitor_counterLambdarn" {
+#     value = module.visitorCounterLambda.visitor_counterLambdarn
+# }
 
-output "rest_api_url" {
-    value = module.apiGateway.rest_api_url
-}
+# output "rest_api_url" {
+#     value = module.apiGateway.rest_api_url
+# }
