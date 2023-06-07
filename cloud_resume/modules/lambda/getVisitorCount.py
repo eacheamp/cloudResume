@@ -11,13 +11,9 @@ def handler (e, context):
         "siteStat_id":"Count"} 
         )
 
-    return  response['Item']['siteStat_id'] 
-
-# {
-#         'statusCode' : 200,
-#         'headers':{
-#             "Access-Control-Allow-Origin":"*"
-#         },
-       
-#         }
-#     }
+    return {
+    "headers": 
+    {"Access-Control-Allow-Origin": "*"
+        },
+        "statusCode": 200, 
+        "body": str(response['Item']['siteStat_id'] )} or {"statusCode": 404, "body": "Item not found"}
