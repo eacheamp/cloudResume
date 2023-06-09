@@ -13,7 +13,11 @@ def handler (e, context):
 
     return {
     "headers": 
-    {"Access-Control-Allow-Origin": "*"
+        {  
+        "Content-Type": "application/json",
+		"Access-Control-Allow-Headers": "Content-Type",
+		"Access-Control-Allow-Origin": "*",
+		"Access-Control-Allow-Methods": "OPTIONS,GET"
         },
         "statusCode": 200, 
-        "body": str(response['Item']['siteStat_id'] )} or {"statusCode": 404, "body": "Item not found"}
+        "body": str(response['Item']['visitorCount'])} or {"statusCode": 404, "body": "Item not found"}
