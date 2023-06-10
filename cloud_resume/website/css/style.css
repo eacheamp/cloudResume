@@ -79,7 +79,7 @@ hr{
     /* font-weight: bold !important; */
     font-family: 'Cutive Mono',monospace;
 }
-#college,#email,#year-graduation,#education,#more-about,#telephone,#fax{
+#college,#email,#year-graduation,#education,#more-about,#telephone,#fax,#countresponse{
     color: #555;
     font-size: 13.5px;
 }
