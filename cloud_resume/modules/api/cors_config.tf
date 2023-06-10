@@ -79,7 +79,7 @@ resource "aws_api_gateway_integration_response" "cors_integration_responseGET" {
   http_method = aws_api_gateway_method.cors_methodGET.http_method
   status_code = 200
   response_parameters = {
-    "method.response.header.Access-Control-Allow-Origin" = "'*'", 
+    "method.response.header.Access-Control-Allow-Origin" = "'https://eacheampong.work'", 
     "method.response.header.Access-Control-Allow-Headers" = "'Content-Type'",
     "method.response.header.Access-Control-Allow-Methods" = "'GET, OPTIONS'" 
   }
@@ -91,8 +91,8 @@ resource "aws_api_gateway_integration_response" "cors_integration_responsePOST" 
   http_method = aws_api_gateway_method.cors_methodPOST.http_method
   status_code = 200
   response_parameters = {
-    "method.response.header.Access-Control-Allow-Origin" = "'*'", 
+    "method.response.header.Access-Control-Allow-Origin" = "'https://eacheampong.work'", 
     "method.response.header.Access-Control-Allow-Headers" = "'Content-Type'",
-    "method.response.header.Access-Control-Allow-Methods" = "'GET, OPTIONS,POST'" 
+    "method.response.header.Access-Control-Allow-Methods" = "'GET, OPTIONS, POST'" 
   }
 }
