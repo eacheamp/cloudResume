@@ -16,7 +16,7 @@ def handler (e, context):
         {  
         "Content-Type": "application/json",
 		"Access-Control-Allow-Headers": "Content-Type",
-		"Access-Control-Allow-Origin": "*",
+		"Access-Control-Allow-Origin": "https://eacheampong.work",
 		"Access-Control-Allow-Methods": "OPTIONS,GET"
         },
         "statusCode": 200, 

@@ -17,11 +17,12 @@
                 </div>
                 
             <p id="name">Ernest Acheampong<br><span id="emailabout">eacheamp@gmail.com</span></p>
+            <p id="more-about">You are visitor number </p> 
+            <p id="sitecount"></p>
             <p id="about-link"><a href="https://www.linkedin.com/in/ernest-acheampong-54671511">linkedin</a></p>
             <p id="about-link"><a href="https://github.com/eacheamp">github</a></p>
-            <p id="more-about">You are visitor number <span id="countresponse"></span></p> 
+            <br>
             <p id="designation">Cloud Engineer<br><span id="college"></span></p>
-            <!-- Visitor Count -->
             <div id="social-links"><a href="#"><i class="fab fa-facebook-f stroke-transparent"></i></a><a><i class="fab fa-twitter stroke-transparent"></i></a><a><i class="fab fa-linkedin-in stroke-transparent"></i></a><a><i class="fab fa-github stroke-transparent"></i></a></div>
     
             <hr width="80%">
@@ -86,7 +87,7 @@
                         'Content-Type': 'application/json',
                         'Access-Control-Allow-Origin': 'https://eacheampong.work',
                         'Access-Control-Allow-Headers': 'Content-Type',
-                        'Access-Control-Allow-Methods': 'POST,GET'
+                        'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
                       },
                     };
                     const requestOptionsPost = {
@@ -96,11 +97,11 @@
                         'Content-Type': 'application/json',
                         'Access-Control-Allow-Origin': 'https://eacheampong.work',
                         'Access-Control-Allow-Headers': 'Content-Type',
-                        'Access-Control-Allow-Methods': 'POST,GET'
+                        'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
                       },
                       body: JSON.stringify({ key: 'Count' }), // Example request body for POST method
                     };
-                    const responseElement = document.getElementById('countresponse');
+                    const responseElement = document.getElementById('sitecount');
                 
                     fetch('https://5iy98jtxcc.execute-api.us-east-1.amazonaws.com/prod/postsitestat', requestOptionsPost)
                       .then(response => response.json())
@@ -112,7 +113,7 @@
                       .then(response => response.json())
                       .then(data => {
                         console.log('Response api endpoint Get Visitor Count:', data);
-                        responseElement.textContent = JSON.stringify(data);
+                        responseElement.textContent = JSON.stringify(data, null, 2);
                       })
                       .catch(error => {
                         console.error('Error:', error);
