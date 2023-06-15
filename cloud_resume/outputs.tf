@@ -13,23 +13,14 @@ output "domain_name" {
   value       = var.domain_name
 }
 
-output "getlambda_function_arn" {
-    value = module.visitorCounterLambda.get_visitor_countLambdarn
-}
-output "putlambda_function_arn" {
-    value = module.visitorCounterLambda.update_visitor_countLambdarn
-
-}
-output "getlambda_function_name" {
-    value = module.visitorCounterLambda.get_visitor_countLambdaName
-}
-output "putlambda_function_name" {
-    value = module.visitorCounterLambda.update_visitor_countLambdaName
+output "lambda_function_arn" {
+    value = module.visitorCounterLambda.visitor_countLambdarn
 }
 
-output "get_rest_api_url" {
-    value = module.apiGateway.get_rest_api_url
+output "lambda_function_name" {
+    value = module.visitorCounterLambda.visitor_countLambdaName
 }
-output "post_rest_api_url" {
-    value = module.apiGateway.post_rest_api_url
+
+output "rest_api_url" {
+    value = module.apiGateway.rest_api_url
 }

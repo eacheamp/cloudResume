@@ -25,10 +25,8 @@ module "apiGateway" {
   source = "./modules/api"
   api_gateway_region            = var.region
   api_gateway_account_id        = var.account_id
-  getlambda_function_arn        = module.visitorCounterLambda.get_visitor_countLambdarn
-  putlambda_function_arn        = module.visitorCounterLambda.update_visitor_countLambdarn
-  getlambda_function_name       = module.visitorCounterLambda.get_visitor_countLambdaName
-  putlambda_function_name       = module.visitorCounterLambda.update_visitor_countLambdaName
+  lambda_function_arn           = module.visitorCounterLambda.visitor_countLambdarn
+  lambda_function_name          = module.visitorCounterLambda.visitor_countLambdaName
   depends_on = [
     module.visitorCounterLambda
   ]   
