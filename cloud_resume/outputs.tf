@@ -21,6 +21,6 @@ output "lambda_function_name" {
     value = module.visitorCounterLambda.visitor_countLambdaName
 }
 
-output "rest_api_url" {
-    value = module.apiGateway.rest_api_url
+output "http_api_url" {
+    value = module.apiGateway.http_api_url
 }

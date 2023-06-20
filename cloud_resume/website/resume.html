@@ -17,11 +17,9 @@
                 </div>
                 
             <p id="name">Ernest Acheampong<br><span id="emailabout">eacheamp@gmail.com</span></p>
-            <p id="more-about">You are visitor number </p> 
-            <p id="sitecount"></p>
+            <p id="more-about">You are site visitor number:  <span id="counter"></span></p>
             <p id="about-link"><a href="https://www.linkedin.com/in/ernest-acheampong-54671511">linkedin</a></p>
             <p id="about-link"><a href="https://github.com/eacheamp">github</a></p>
-            <br>
             <p id="designation">Cloud Engineer<br><span id="college"></span></p>
             <div id="social-links"><a href="#"><i class="fab fa-facebook-f stroke-transparent"></i></a><a><i class="fab fa-twitter stroke-transparent"></i></a><a><i class="fab fa-linkedin-in stroke-transparent"></i></a><a><i class="fab fa-github stroke-transparent"></i></a></div>
     
@@ -79,47 +77,19 @@
                 </div>
             </div>
             <script>
-                window.onload = function() {
-                    const requestOptionsGet = {
-                      method: 'GET',
-                      headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': 'https://eacheampong.work',
-                        'Access-Control-Allow-Headers': 'Content-Type',
-                        'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
-                      },
-                    };
-                    const requestOptionsPost = {
-                      method: 'POST',
-                      headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': 'https://eacheampong.work',
-                        'Access-Control-Allow-Headers': 'Content-Type',
-                        'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
-                      },
-                      body: JSON.stringify({ key: 'Count' }), // Example request body for POST method
-                    };
-                    const responseElement = document.getElementById('sitecount');
-                
-                    fetch('https://5iy98jtxcc.execute-api.us-east-1.amazonaws.com/prod/postsitestat', requestOptionsPost)
-                      .then(response => response.json())
-                      .then(data => {
-                        console.log('Response from api endpoint POST Visitor Count:', data);
-                        // Call the second API endpoint here
-                        return fetch('https://eci2dlnrd2.execute-api.us-east-1.amazonaws.com/prod/getsitestat', requestOptionsGet);
-                      })
-                      .then(response => response.json())
-                      .then(data => {
-                        console.log('Response api endpoint Get Visitor Count:', data);
-                        responseElement.textContent = JSON.stringify(data, null, 2);
-                      })
-                      .catch(error => {
-                        console.error('Error:', error);
-                      });
-                  };
-                </script>
+              fetch('https://p9muphla9c.execute-api.us-east-1.amazonaws.com/prod/getcount', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': 'http://eacheampong.work',
+                    'Access-Control-Allow-Headers': 'Content-Type',
+                    'Access-Control-Allow-Methods': 'POST,GET'
+                }
+              })
+              .then(response => response.json())
+              .then(response => document.getElementById("counter").innerHTML = (JSON.stringify(response)))
+            </script>
                 
         </body>
         </html>
