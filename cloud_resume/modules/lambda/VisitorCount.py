@@ -6,6 +6,7 @@ tableName       = "eacheampongVisitorCounter"
 table           = dynamodb.Table(tableName)
 
 def handler (e, context):
+    print(e)
     # -> get item - get number of visitors
     response    = table.get_item(
         Key={"siteStat_id":"siteStat_val"} 
@@ -29,4 +30,4 @@ def handler (e, context):
             "Access-Control-Allow-Methods": "OPTIONS"
             },
             "statusCode": 200,
-            "body": "You are the "+str(table_item["Visits"]) +"th visitor"} or {"statusCode": 404, "body": "Item not found"}
+            "body": str(table_item["Visits"])} or {"statusCode": 404, "body": "Item not found"}

@@ -21,6 +21,16 @@ provider "cloudflare" {
 module "visitorCounterLambda" {
   source = "./modules/lambda"
 }
+# module "apiGateway" {
+#   source = "./modules/api"
+#   api_gateway_region            = var.region
+#   api_gateway_account_id        = var.account_id
+#   lambda_function_arn           = module.visitorCounterLambda.visitor_countLambdarn
+#   lambda_function_name          = module.visitorCounterLambda.visitor_countLambdaName
+#   depends_on = [
+#     module.visitorCounterLambda
+#   ]   
+# }
 module "apiGateway" {
   source = "./modules/api"
   api_gateway_region            = var.region

@@ -1,8 +1,13 @@
-variable "rest_api_name" {
+variable "api_name" {
     type        = string
     description = "Name of api gateway rest_api to fetch data from dynamo table"
-    default     = "cloud-resume-api-gateway-fetch"
+    default     = "cloud-resume-api-gateway"
 }
+# variable "rest_api_name" {
+#     type        = string
+#     description = "Name of api gateway rest_api to fetch data from dynamo table"
+#     default     = "cloud-resume-api-gateway-fetch"
+# }
 
 variable "api_gateway_region" {
   type        = string
@@ -21,7 +26,7 @@ variable "lambda_function_arn" {
   type        = string
   description = "The ARN of the Lambda function"
 }
-variable "rest_api_stage_name" {
+variable "http_api_stage_name" {
   type        = string
   description = "The name of the API Gateway stage"
   default     = "prod"
